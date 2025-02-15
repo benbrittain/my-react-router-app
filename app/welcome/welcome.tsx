@@ -1,5 +1,5 @@
-import logoDark from "./logo-dark.svg";
-import logoLight from "./logo-light.svg";
+const logoDark = require("./logo-dark.svg") as string;
+const logoLight = require("./logo-light.svg") as string;
 
 export function Welcome() {
   return (
