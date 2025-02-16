@@ -1,18 +1,13 @@
-load("//rules/typescript:defs.bzl", "typescript")
+load("//build/rules/yarn/defs.bzl", "js_module")
 
-typescript(
+js_module(
     name = "app",
-    srcs = glob(["app/**"]),
-    generated_types = [":react-router"],
-    node_modules = "//third-party/node:node_modules",
-    visibility = ["//backend/..."],
-)
-
-# TODO It would be nice to replace this with a genrule
-# or a dedicated react-router rule to generate the types.
-# instead currently run `npx react-router typegen` to refresh.
-export_file(
-    name = "react-router",
-    src = ".react-router/types",
-    out = "types",
+    srcs = ["index.js"],
+    entry = "index.js",
+    deps = [
+        "//third-party/node:react-dom-19.0.0",
+        "//third-party/node:react-19.0.0",
+        "//third-party/node:react-router-7.2.0",
+    ],
+    visibility = ["PUBLIC"],
 )
