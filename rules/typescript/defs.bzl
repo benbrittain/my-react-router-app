@@ -46,6 +46,8 @@ def _typescript_impl(ctx: AnalysisContext) -> list[Provider]:
         inputs.append(
             relativize_to_tsconfig(src_dir.project(src.short_path), tsconfig_artifact),
         )
+
+    # TODO type directory stuff is very hacky
     ty_dir = relativize_to_tsconfig(src_dir.project("types"), tsconfig_artifact)
     inputs.append(ty_dir)
 
@@ -57,8 +59,14 @@ def _typescript_impl(ctx: AnalysisContext) -> list[Provider]:
             "compilerOptions": {
                 # https://www.typescriptlang.org/docs/handbook/project-references.html
                 "composite": True,
-                # "incremental": True,
                 "lib": ["DOM", "DOM.Iterable", "ES2022"],
+                # By default all visible ”@types” packages are included in your compilation.
+                # Packages in node_modules/@types of any enclosing folder are considered
+                # visible. For example, that means packages within ./node_modules/@types/,
+                # ../node_modules/@types/, ../../node_modules/@types/, and so on.
+                #
+                # node_modules is dependend on by the tsc invokation, so it should materialize
+                # for tsc
                 "types": ["node"],
                 "target": "ES2022",
                 "module": "ES2022",
@@ -68,15 +76,12 @@ def _typescript_impl(ctx: AnalysisContext) -> list[Provider]:
                     relativize_to_tsconfig(src_dir, tsconfig_artifact),
                     ty_dir,
                 ],
-                "paths": {
-                    "~/*": ["./app/*"],
-                },
                 "esModuleInterop": True,
                 "verbatimModuleSyntax": True,
                 "resolveJsonModule": True,
                 "skipLibCheck": True,
                 "strict": True,
-                "noEmit": True,
+                "noEmit": False,
                 "outDir": relativize_to_tsconfig(out_dir, tsconfig_artifact),
             },
         },
@@ -88,7 +93,7 @@ def _typescript_impl(ctx: AnalysisContext) -> list[Provider]:
             ctx.attrs._toolchain[TypescriptToolchainInfo].compiler,
             "-p",
             tsconfig,
-        ], hidden = [inputs, ctx.attrs.generated_types, out_dir.as_output()]),
+        ], hidden = [inputs, ctx.attrs.node_modules, ctx.attrs.generated_types, out_dir.as_output()]),
         category = "typescript",
     )
 
@@ -106,6 +111,7 @@ typescript = rule(
     attrs = {
         "srcs": attrs.list(attrs.source(), default = []),
         "generated_types": attrs.list(attrs.source(), default = []),
+        "node_modules": attrs.source(),
         "_toolchain": attrs.toolchain_dep(default = "toolchains//:typescript", providers = [TypescriptToolchainInfo]),
     },
 )
