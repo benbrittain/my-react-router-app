@@ -16,5 +16,5 @@ rust_binary = "cargo.rust_binary"
 
 buckfile_imports = """
 load("@prelude//rust:cargo_package.bzl", "cargo")
-load("@prelude//rust:cargo_buildscript.bzl", "buildscript_run")
+load("@root//rules/rust/cargo_buildscript.bzl", "buildscript_run")
 """

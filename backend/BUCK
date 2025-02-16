@@ -1,0 +1,9 @@
+rust_binary(
+    name = "backend",
+    srcs = glob(["src/**/*.rs"]),
+    deps = [
+        "//third-party/rust:tokio",
+        "//third-party/rust:tower-http",
+        "//third-party/rust:axum",
+    ],
+)

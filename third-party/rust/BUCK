@@ -3,7 +3,7 @@
 ##########################################################
 
 load("@prelude//rust:cargo_package.bzl", "cargo")
-load("@prelude//rust:cargo_buildscript.bzl", "buildscript_run")
+load("@root//rules/rust/cargo_buildscript.bzl", "buildscript_run")
 
 alias(
     name = "axum",
@@ -98,6 +98,23 @@ cargo.rust_library(
         ":tower-service-0.3.3",
         ":tracing-0.1.41",
     ],
+)
+
+http_archive(
+    name = "bitflags-2.8.0.crate",
+    sha256 = "8f68f53c83ab957f72c32642f3868eec03eb974d1fb82e453128456482613d36",
+    strip_prefix = "bitflags-2.8.0",
+    urls = ["https://static.crates.io/crates/bitflags/2.8.0/download"],
+    visibility = [],
+)
+
+cargo.rust_library(
+    name = "bitflags-2.8.0",
+    srcs = [":bitflags-2.8.0.crate"],
+    crate = "bitflags",
+    crate_root = "bitflags-2.8.0.crate/src/lib.rs",
+    edition = "2021",
+    visibility = [],
 )
 
 http_archive(
@@ -201,6 +218,28 @@ cargo.rust_library(
     srcs = [":futures-core-0.3.31.crate"],
     crate = "futures_core",
     crate_root = "futures-core-0.3.31.crate/src/lib.rs",
+    edition = "2018",
+    features = [
+        "alloc",
+        "default",
+        "std",
+    ],
+    visibility = [],
+)
+
+http_archive(
+    name = "futures-sink-0.3.31.crate",
+    sha256 = "e575fab7d1e0dcb8d0c7bcf9a63ee213816ab51902e6d244a95819acacf1d4f7",
+    strip_prefix = "futures-sink-0.3.31",
+    urls = ["https://static.crates.io/crates/futures-sink/0.3.31/download"],
+    visibility = [],
+)
+
+cargo.rust_library(
+    name = "futures-sink-0.3.31",
+    srcs = [":futures-sink-0.3.31.crate"],
+    crate = "futures_sink",
+    crate_root = "futures-sink-0.3.31.crate/src/lib.rs",
     edition = "2018",
     features = [
         "alloc",
@@ -321,6 +360,23 @@ cargo.rust_library(
         ":http-body-1.0.1",
         ":pin-project-lite-0.2.16",
     ],
+)
+
+http_archive(
+    name = "http-range-header-0.4.2.crate",
+    sha256 = "9171a2ea8a68358193d15dd5d70c1c10a2afc3e7e4c5bc92bc9f025cebd7359c",
+    strip_prefix = "http-range-header-0.4.2",
+    urls = ["https://static.crates.io/crates/http-range-header/0.4.2/download"],
+    visibility = [],
+)
+
+cargo.rust_library(
+    name = "http-range-header-0.4.2",
+    srcs = [":http-range-header-0.4.2.crate"],
+    crate = "http_range_header",
+    crate_root = "http-range-header-0.4.2.crate/src/lib.rs",
+    edition = "2018",
+    visibility = [],
 )
 
 http_archive(
@@ -565,6 +621,67 @@ cargo.rust_library(
     crate_root = "mime-0.3.17.crate/src/lib.rs",
     edition = "2015",
     visibility = [],
+)
+
+http_archive(
+    name = "mime_guess-2.0.5.crate",
+    sha256 = "f7c44f8e672c00fe5308fa235f821cb4198414e1c77935c1ab6948d3fd78550e",
+    strip_prefix = "mime_guess-2.0.5",
+    urls = ["https://static.crates.io/crates/mime_guess/2.0.5/download"],
+    visibility = [],
+)
+
+cargo.rust_library(
+    name = "mime_guess-2.0.5",
+    srcs = [":mime_guess-2.0.5.crate"],
+    crate = "mime_guess",
+    crate_root = "mime_guess-2.0.5.crate/src/lib.rs",
+    edition = "2015",
+    env = {
+        "CARGO_MANIFEST_DIR": "mime_guess-2.0.5.crate",
+        "CARGO_PKG_AUTHORS": "Austin Bonander <austin.bonander@gmail.com>",
+        "CARGO_PKG_DESCRIPTION": "A simple crate for detection of a file's MIME type by its extension.",
+        "CARGO_PKG_NAME": "mime_guess",
+        "CARGO_PKG_REPOSITORY": "https://github.com/abonander/mime_guess",
+        "CARGO_PKG_VERSION": "2.0.5",
+        "CARGO_PKG_VERSION_MAJOR": "2",
+        "CARGO_PKG_VERSION_MINOR": "0",
+        "CARGO_PKG_VERSION_PATCH": "5",
+    },
+    rustc_flags = ["@$(location :mime_guess-2.0.5-build-script-run[rustc_flags])"],
+    visibility = [],
+    deps = [
+        ":mime-0.3.17",
+        ":unicase-2.8.1",
+    ],
+)
+
+cargo.rust_binary(
+    name = "mime_guess-2.0.5-build-script-build",
+    srcs = [":mime_guess-2.0.5.crate"],
+    crate = "build_script_build",
+    crate_root = "mime_guess-2.0.5.crate/build.rs",
+    edition = "2015",
+    env = {
+        "CARGO_MANIFEST_DIR": "mime_guess-2.0.5.crate",
+        "CARGO_PKG_AUTHORS": "Austin Bonander <austin.bonander@gmail.com>",
+        "CARGO_PKG_DESCRIPTION": "A simple crate for detection of a file's MIME type by its extension.",
+        "CARGO_PKG_NAME": "mime_guess",
+        "CARGO_PKG_REPOSITORY": "https://github.com/abonander/mime_guess",
+        "CARGO_PKG_VERSION": "2.0.5",
+        "CARGO_PKG_VERSION_MAJOR": "2",
+        "CARGO_PKG_VERSION_MINOR": "0",
+        "CARGO_PKG_VERSION_PATCH": "5",
+    },
+    visibility = [],
+    deps = [":unicase-2.8.1"],
+)
+
+buildscript_run(
+    name = "mime_guess-2.0.5-build-script-run",
+    package_name = "mime_guess",
+    buildscript_rule = ":mime_guess-2.0.5-build-script-build",
+    version = "2.0.5",
 )
 
 http_archive(
@@ -851,6 +968,7 @@ cargo.rust_library(
         "raw_value",
         "std",
     ],
+    rustc_flags = ["--cfg=fast_arithmetic=\"64\""],
     visibility = [],
     deps = [
         ":itoa-1.0.14",
@@ -902,6 +1020,24 @@ cargo.rust_library(
         ":ryu-1.0.19",
         ":serde-1.0.217",
     ],
+)
+
+http_archive(
+    name = "signal-hook-registry-1.4.2.crate",
+    sha256 = "a9e9e0b4211b72e7b8b6e85c807d36c212bdb33ea8587f7569562a84df5465b1",
+    strip_prefix = "signal-hook-registry-1.4.2",
+    urls = ["https://static.crates.io/crates/signal-hook-registry/1.4.2/download"],
+    visibility = [],
+)
+
+cargo.rust_library(
+    name = "signal-hook-registry-1.4.2",
+    srcs = [":signal-hook-registry-1.4.2.crate"],
+    crate = "signal_hook_registry",
+    crate_root = "signal-hook-registry-1.4.2.crate/src/lib.rs",
+    edition = "2015",
+    visibility = [],
+    deps = [":libc-0.2.169"],
 )
 
 http_archive(
@@ -1032,13 +1168,20 @@ cargo.rust_library(
     crate_root = "tokio-1.43.0.crate/src/lib.rs",
     edition = "2021",
     features = [
+        "bytes",
         "default",
+        "fs",
         "io-std",
+        "io-util",
         "libc",
         "macros",
         "mio",
         "net",
+        "process",
         "rt",
+        "rt-multi-thread",
+        "signal",
+        "signal-hook-registry",
         "socket2",
         "sync",
         "time",
@@ -1049,24 +1192,28 @@ cargo.rust_library(
         "linux-arm64": dict(
             deps = [
                 ":libc-0.2.169",
+                ":signal-hook-registry-1.4.2",
                 ":socket2-0.5.8",
             ],
         ),
         "linux-x86_64": dict(
             deps = [
                 ":libc-0.2.169",
+                ":signal-hook-registry-1.4.2",
                 ":socket2-0.5.8",
             ],
         ),
         "macos-arm64": dict(
             deps = [
                 ":libc-0.2.169",
+                ":signal-hook-registry-1.4.2",
                 ":socket2-0.5.8",
             ],
         ),
         "macos-x86_64": dict(
             deps = [
                 ":libc-0.2.169",
+                ":signal-hook-registry-1.4.2",
                 ":socket2-0.5.8",
             ],
         ),
@@ -1085,6 +1232,7 @@ cargo.rust_library(
     },
     visibility = [],
     deps = [
+        ":bytes-1.10.0",
         ":mio-1.0.3",
         ":pin-project-lite-0.2.16",
         ":tokio-macros-2.5.0",
@@ -1111,6 +1259,31 @@ cargo.rust_library(
         ":proc-macro2-1.0.93",
         ":quote-1.0.38",
         ":syn-2.0.98",
+    ],
+)
+
+http_archive(
+    name = "tokio-util-0.7.13.crate",
+    sha256 = "d7fcaa8d55a2bdd6b83ace262b016eca0d79ee02818c5c1bcdf0305114081078",
+    strip_prefix = "tokio-util-0.7.13",
+    urls = ["https://static.crates.io/crates/tokio-util/0.7.13/download"],
+    visibility = [],
+)
+
+cargo.rust_library(
+    name = "tokio-util-0.7.13",
+    srcs = [":tokio-util-0.7.13.crate"],
+    crate = "tokio_util",
+    crate_root = "tokio-util-0.7.13.crate/src/lib.rs",
+    edition = "2021",
+    features = ["io"],
+    visibility = [],
+    deps = [
+        ":bytes-1.10.0",
+        ":futures-core-0.3.31",
+        ":futures-sink-0.3.31",
+        ":pin-project-lite-0.2.16",
+        ":tokio-1.43.0",
     ],
 )
 
@@ -1147,6 +1320,61 @@ cargo.rust_library(
         ":pin-project-lite-0.2.16",
         ":sync_wrapper-1.0.2",
         ":tokio-1.43.0",
+        ":tower-layer-0.3.3",
+        ":tower-service-0.3.3",
+        ":tracing-0.1.41",
+    ],
+)
+
+alias(
+    name = "tower-http",
+    actual = ":tower-http-0.6.2",
+    visibility = ["PUBLIC"],
+)
+
+http_archive(
+    name = "tower-http-0.6.2.crate",
+    sha256 = "403fa3b783d4b626a8ad51d766ab03cb6d2dbfc46b1c5d4448395e6628dc9697",
+    strip_prefix = "tower-http-0.6.2",
+    urls = ["https://static.crates.io/crates/tower-http/0.6.2/download"],
+    visibility = [],
+)
+
+cargo.rust_library(
+    name = "tower-http-0.6.2",
+    srcs = [":tower-http-0.6.2.crate"],
+    crate = "tower_http",
+    crate_root = "tower-http-0.6.2.crate/src/lib.rs",
+    edition = "2018",
+    features = [
+        "default",
+        "fs",
+        "futures-util",
+        "httpdate",
+        "mime",
+        "mime_guess",
+        "percent-encoding",
+        "set-status",
+        "tokio",
+        "tokio-util",
+        "tracing",
+    ],
+    visibility = [],
+    deps = [
+        ":bitflags-2.8.0",
+        ":bytes-1.10.0",
+        ":futures-util-0.3.31",
+        ":http-1.2.0",
+        ":http-body-1.0.1",
+        ":http-body-util-0.1.2",
+        ":http-range-header-0.4.2",
+        ":httpdate-1.0.3",
+        ":mime-0.3.17",
+        ":mime_guess-2.0.5",
+        ":percent-encoding-2.3.1",
+        ":pin-project-lite-0.2.16",
+        ":tokio-1.43.0",
+        ":tokio-util-0.7.13",
         ":tower-layer-0.3.3",
         ":tower-service-0.3.3",
         ":tracing-0.1.41",
@@ -1236,6 +1464,23 @@ cargo.rust_library(
 )
 
 http_archive(
+    name = "unicase-2.8.1.crate",
+    sha256 = "75b844d17643ee918803943289730bec8aac480150456169e647ed0b576ba539",
+    strip_prefix = "unicase-2.8.1",
+    urls = ["https://static.crates.io/crates/unicase/2.8.1/download"],
+    visibility = [],
+)
+
+cargo.rust_library(
+    name = "unicase-2.8.1",
+    srcs = [":unicase-2.8.1.crate"],
+    crate = "unicase",
+    crate_root = "unicase-2.8.1.crate/src/lib.rs",
+    edition = "2018",
+    visibility = [],
+)
+
+http_archive(
     name = "unicode-ident-1.0.16.crate",
     sha256 = "a210d160f08b701c8721ba1c726c11662f877ea6b7094007e1ca9a1041945034",
     strip_prefix = "unicode-ident-1.0.16",
@@ -1281,6 +1526,7 @@ cargo.rust_library(
         "Win32_Storage",
         "Win32_Storage_FileSystem",
         "Win32_System",
+        "Win32_System_Console",
         "Win32_System_IO",
         "Win32_System_Pipes",
         "Win32_System_SystemServices",
