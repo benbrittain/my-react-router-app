@@ -1,0 +1,8 @@
+load("//rules/npm:defs.bzl", "pnpm")
+
+pnpm(
+    name = "node_modules",
+    package = "package.json",
+    lockfile = "pnpm-lock.yaml",
+    visibility = ["PUBLIC"],
+)
