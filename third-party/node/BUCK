@@ -1,8 +1,85 @@
-load("//rules/npm:defs.bzl", "pnpm")
-
-pnpm(
-    name = "node_modules",
-    package = "package.json",
-    lockfile = "pnpm-lock.yaml",
+load("//build/rules/yarn/defs.bzl", "yarn_dep")
+yarn_dep(
+    name = "cookie-1.0.2",
+    pkg_name = "cookie",
+    pkg_reference = "1.0.2",
+    checksum = "c31087f5377b0da2d93183d10675ea2d03b286832ef12c08f978a50701e87f69",
+    deps = [
+    ],
     visibility = ["PUBLIC"],
 )
+            
+yarn_dep(
+    name = "react-dom-19.0.0",
+    pkg_name = "react-dom",
+    pkg_reference = "19.0.0",
+    checksum = "520eaa044e9325e86f90b98711039dfd4a232bba7dd20ebd32b095a7b6377977",
+    deps = [
+        ":scheduler-0.25.0",
+    ],
+    visibility = ["PUBLIC"],
+)
+            
+yarn_dep(
+    name = "react-router-7.2.0",
+    pkg_name = "react-router",
+    pkg_reference = "7.2.0",
+    checksum = "5ab97ec356fd559c47cf686ee7ba72817dea47d6ad5baad7f1b32ef79d710c6f",
+    deps = [
+        ":cookie-1.0.2",
+        ":set-cookie-parser-2.7.1",
+        ":turbo-stream-2.4.0",
+    ],
+    visibility = ["PUBLIC"],
+)
+            
+yarn_dep(
+    name = "react-19.0.0",
+    pkg_name = "react",
+    pkg_reference = "19.0.0",
+    checksum = "2178ec02d41c09f60b5a7dc21844787afd0a41f268faa6ea9ac7a06ccf64eca6",
+    deps = [
+    ],
+    visibility = ["PUBLIC"],
+)
+            
+yarn_dep(
+    name = "scheduler-0.25.0",
+    pkg_name = "scheduler",
+    pkg_reference = "0.25.0",
+    checksum = "8aac2da6decb09c1dacf8c106f62d2fb4454fbb1fdf2f6fe6d4ef1a57b7c6914",
+    deps = [
+    ],
+    visibility = ["PUBLIC"],
+)
+            
+yarn_dep(
+    name = "set-cookie-parser-2.7.1",
+    pkg_name = "set-cookie-parser",
+    pkg_reference = "2.7.1",
+    checksum = "bc259c1ac6006842880a53cae4404618418d4534d1b615e1bf989d891fa46fe9",
+    deps = [
+    ],
+    visibility = ["PUBLIC"],
+)
+            
+yarn_dep(
+    name = "turbo-stream-2.4.0",
+    pkg_name = "turbo-stream",
+    pkg_reference = "2.4.0",
+    checksum = "a9f7da5d0b5bc862f62cc07ed1f7d818d998a335e59975d7998ac902bb949c0e",
+    deps = [
+    ],
+    visibility = ["PUBLIC"],
+)
+            
+yarn_dep(
+    name = "typescript-5.7.3",
+    pkg_name = "typescript",
+    pkg_reference = "5.7.3",
+    checksum = "80cfca1254bab8e81d639178e42d6406d856fba6e34cad60d1ab50ee6e5f7ebb",
+    deps = [
+    ],
+    visibility = ["PUBLIC"],
+)
+            

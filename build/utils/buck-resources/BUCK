@@ -1,0 +1,11 @@
+# Helper for accessing buck2 resources
+rust_library(
+    name = "buck-resources",
+    srcs = ["src/lib.rs"],
+    deps = [
+        "//third-party/rust:dunce",
+        "//third-party/rust:serde_json",
+        "//third-party/rust:thiserror",
+    ],
+    visibility = ["PUBLIC"],
+)

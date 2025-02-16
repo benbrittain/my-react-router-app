@@ -1,7 +1,7 @@
 [cells]
 root = .
 prelude = prelude
-toolchains = toolchains
+toolchains = build/toolchains
 none = none
 
 [cell_aliases]
@@ -17,3 +17,6 @@ prelude = bundled
 
 [parser]
 target_platform_detector_spec = target:root//...->prelude//platforms:default
+
+[build]
+execution_platforms = prelude//platforms:default

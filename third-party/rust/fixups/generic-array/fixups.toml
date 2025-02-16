@@ -1,0 +1,2 @@
+buildscript = []
+cfgs = ["relaxed_coherence"]

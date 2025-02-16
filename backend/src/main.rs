@@ -1,19 +1,19 @@
-use axum::routing::get;
-use axum::Router;
+use axum::{
+    Router,
+    routing::{get, get_service},
+};
+use buck_resources::get_resource;
 use tower_http::services::{ServeDir, ServeFile};
 
-use buck_resources::get_resource;
-
 fn using_serve_dir() -> Router {
-    let mut asset_path = get_resource("backend/javascript_assets").unwrap();
-    asset_path.push("__srcs/app");
-    let serve_dir =
-        ServeDir::new(asset_path).not_found_service(ServeFile::new("assets/index.html"));
-
+    let mut js_asset_path = get_resource("backend/bundle.js").unwrap();
+    let mut index_asset_path = get_resource("backend/index.html").unwrap();
     Router::new()
-        .route("/foo", get(|| async { "Hi from /foo" }))
-        .nest_service("/assets", serve_dir.clone())
-        .fallback_service(serve_dir)
+        .route("/index.html", get_service(ServeFile::new(index_asset_path)))
+        .route(
+            "/assets/main.js",
+            get_service(ServeFile::new(js_asset_path)),
+        )
 }
 
 #[tokio::main]

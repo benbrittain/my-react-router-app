@@ -3,7 +3,13 @@
 
 # React Router
 /.react-router/
-/build/
 
 # Buck2
 /buck-out/
+rust-project.json
+
+# yarn install
+.yarn/
+.pnp.data.json
+.pnp.cjs
+.yarnrc.yml

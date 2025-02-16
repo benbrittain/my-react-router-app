@@ -5,9 +5,15 @@ rust_binary(
         "//third-party/rust:tokio",
         "//third-party/rust:tower-http",
         "//third-party/rust:axum",
-        "//common/resources:buck_resources",
+        "//build/utils/buck-resources:buck-resources",
     ],
     resources = {
-        "javascript_assets": "//frontend:app",
+        "bundle.js": "//frontend:app",
+        "index.html": ":index.html",
     },
+)
+
+export_file(
+    name = "index.html",
+    src = "assets/index.html",
 )
