@@ -5,5 +5,9 @@ rust_binary(
         "//third-party/rust:tokio",
         "//third-party/rust:tower-http",
         "//third-party/rust:axum",
+        "//common/resources:buck_resources",
     ],
+    resources = {
+        "javascript_assets": "//frontend:app",
+    },
 )

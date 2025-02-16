@@ -5,6 +5,7 @@ typescript(
     srcs = glob(["app/**"]),
     generated_types = [":react-router"],
     node_modules = "//third-party/node:node_modules",
+    visibility = ["//backend/..."],
 )
 
 # TODO It would be nice to replace this with a genrule

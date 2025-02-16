@@ -138,6 +138,29 @@ cargo.rust_library(
     visibility = [],
 )
 
+alias(
+    name = "dunce",
+    actual = ":dunce-1.0.5",
+    visibility = ["PUBLIC"],
+)
+
+http_archive(
+    name = "dunce-1.0.5.crate",
+    sha256 = "92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813",
+    strip_prefix = "dunce-1.0.5",
+    urls = ["https://static.crates.io/crates/dunce/1.0.5/download"],
+    visibility = [],
+)
+
+cargo.rust_library(
+    name = "dunce-1.0.5",
+    srcs = [":dunce-1.0.5.crate"],
+    crate = "dunce",
+    crate_root = "dunce-1.0.5.crate/src/lib.rs",
+    edition = "2021",
+    visibility = [],
+)
+
 http_archive(
     name = "fnv-1.0.7.crate",
     sha256 = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1",
@@ -949,6 +972,12 @@ cargo.rust_library(
     visibility = [],
 )
 
+alias(
+    name = "serde_json",
+    actual = ":serde_json-1.0.138",
+    visibility = ["PUBLIC"],
+)
+
 http_archive(
     name = "serde_json-1.0.138.crate",
     sha256 = "d434192e7da787e94a6ea7e9670b26a036d0ca41e0b7efb2676dd32bae872949",
@@ -1145,6 +1174,57 @@ cargo.rust_library(
     crate_root = "sync_wrapper-1.0.2.crate/src/lib.rs",
     edition = "2021",
     visibility = [],
+)
+
+alias(
+    name = "thiserror",
+    actual = ":thiserror-2.0.11",
+    visibility = ["PUBLIC"],
+)
+
+http_archive(
+    name = "thiserror-2.0.11.crate",
+    sha256 = "d452f284b73e6d76dd36758a0c8684b1d5be31f92b89d07fd5822175732206fc",
+    strip_prefix = "thiserror-2.0.11",
+    urls = ["https://static.crates.io/crates/thiserror/2.0.11/download"],
+    visibility = [],
+)
+
+cargo.rust_library(
+    name = "thiserror-2.0.11",
+    srcs = [":thiserror-2.0.11.crate"],
+    crate = "thiserror",
+    crate_root = "thiserror-2.0.11.crate/src/lib.rs",
+    edition = "2021",
+    features = [
+        "default",
+        "std",
+    ],
+    visibility = [],
+    deps = [":thiserror-impl-2.0.11"],
+)
+
+http_archive(
+    name = "thiserror-impl-2.0.11.crate",
+    sha256 = "26afc1baea8a989337eeb52b6e72a039780ce45c3edfcc9c5b9d112feeb173c2",
+    strip_prefix = "thiserror-impl-2.0.11",
+    urls = ["https://static.crates.io/crates/thiserror-impl/2.0.11/download"],
+    visibility = [],
+)
+
+cargo.rust_library(
+    name = "thiserror-impl-2.0.11",
+    srcs = [":thiserror-impl-2.0.11.crate"],
+    crate = "thiserror_impl",
+    crate_root = "thiserror-impl-2.0.11.crate/src/lib.rs",
+    edition = "2021",
+    proc_macro = True,
+    visibility = [],
+    deps = [
+        ":proc-macro2-1.0.93",
+        ":quote-1.0.38",
+        ":syn-2.0.98",
+    ],
 )
 
 alias(

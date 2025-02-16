@@ -60,7 +60,7 @@ def _typescript_impl(ctx: AnalysisContext) -> list[Provider]:
             "compilerOptions": {
                 # https://www.typescriptlang.org/docs/handbook/project-references.html
                 "composite": True,
-                "lib": ["DOM", "DOM.Iterable", "ES2022"],
+                "lib": ["DOM", "DOM.Iterable", "ES2020"],
                 # By default all visible ”@types” packages are included in your compilation.
                 # Packages in node_modules/@types of any enclosing folder are considered
                 # visible. For example, that means packages within ./node_modules/@types/,
@@ -69,9 +69,16 @@ def _typescript_impl(ctx: AnalysisContext) -> list[Provider]:
                 # node_modules is dependend on by the tsc invokation, so it should materialize
                 # for tsc
                 "types": ["node"],
-                "target": "ES2022",
-                "module": "ES2022",
+                "target": "ES2020",
+                "module": "ES2020",
+                "useDefineForClassFields": True,
+                "isolatedModules": True,
+                "moduleDetection": "Force",
                 "moduleResolution": "bundler",
+                "noUnusedLocals": True,
+                "noUnusedParameters": True,
+                "noFallthroughCasesInSwitch": True,
+                "noUncheckedSideEffectImports": True,
                 "jsx": "react-jsx",
                 "rootDirs": [
                     relativize_to_tsconfig(src_dir, tsconfig_artifact),
