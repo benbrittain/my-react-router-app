@@ -1,3 +1,4 @@
+load("//rules/npm:defs.bzl", "pnpm")
 load("//rules/typescript:defs.bzl", "typescript")
 
 typescript(
@@ -16,7 +17,8 @@ export_file(
     out = "types",
 )
 
-export_file(
+pnpm(
     name = "node_modules",
-    src = "node_modules",
+    package = "package.json",
+    lockfile = "pnpm-lock.yaml",
 )

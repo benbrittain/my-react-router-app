@@ -32,6 +32,7 @@ def relativize_to_tsconfig(artifact: Artifact, tsconfig_artifact: Artifact) -> c
 def _typescript_impl(ctx: AnalysisContext) -> list[Provider]:
     out_dir = ctx.actions.declare_output("__output")
     tsconfig_artifact = ctx.actions.declare_output("tsconfig.json")
+    node_modules = ctx.actions.symlink_file("node_modules", ctx.attrs.node_modules)
 
     src_dir = {}
     for src in ctx.attrs.srcs:
@@ -47,7 +48,7 @@ def _typescript_impl(ctx: AnalysisContext) -> list[Provider]:
             relativize_to_tsconfig(src_dir.project(src.short_path), tsconfig_artifact),
         )
 
-    # TODO type directory stuff is very hacky
+    # TODO type directory stuff is very hacky and not generic
     ty_dir = relativize_to_tsconfig(src_dir.project("types"), tsconfig_artifact)
     inputs.append(ty_dir)
 
@@ -93,12 +94,12 @@ def _typescript_impl(ctx: AnalysisContext) -> list[Provider]:
             ctx.attrs._toolchain[TypescriptToolchainInfo].compiler,
             "-p",
             tsconfig,
-        ], hidden = [inputs, ctx.attrs.node_modules, ctx.attrs.generated_types, out_dir.as_output()]),
+        ], hidden = [inputs, ctx.attrs.node_modules, ctx.attrs.generated_types, node_modules, out_dir.as_output()]),
         category = "typescript",
     )
 
     sub_targets = {
-        "tsconfig": [DefaultInfo(default_output = tsconfig_artifact)],  #[tsconfig])],
+        "tsconfig": [DefaultInfo(default_output = tsconfig_artifact)],
     }
 
     return [
