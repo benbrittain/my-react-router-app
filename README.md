@@ -1,4 +1,4 @@
-A demo of setting up a multi-language rust + javascript buck2 project
+A demo of setting up a multi-language rust + javascript buck2 project. Very rudimentary and a work in progress.
 
 ## Example
 ```
