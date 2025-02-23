@@ -212,6 +212,8 @@ def _js_module_impl(ctx: AnalysisContext) -> list[Provider]:
                     [
                         ctx.attrs._toolchain[JsToolchainInfo].esbuild,
                         "--bundle",
+                        # TODO make external
+                        "--sourcemap=internal",
                         "--loader:.js=jsx",
                         "--format=cjs",
                         "--log-level=verbose",
