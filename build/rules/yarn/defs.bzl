@@ -168,15 +168,6 @@ def create_pnp_json(ctx: AnalysisContext, workspace) -> (list[Artifact], Artifac
 
     return (js_deps, pnp_json)
 
-def _js_module_impl(ctx: AnalysisContext) -> list[Provider]:
-    """
-    The .pnp.data.json file is part of the yarn pnp specification
-    We use that spec to interop with the js ecosystem.
-    """
-
-    workspace = ctx.actions.declare_output("__runspace", dir = True)
-    (js_deps, pnp_json) = create_pnp_json(ctx, workspace)
-
     # node_env_file = ctx.actions.write(
     #     ".env",
     #     cmd_args([
@@ -192,6 +183,15 @@ def _js_module_impl(ctx: AnalysisContext) -> list[Provider]:
     #     ctx.attrs._loader[DefaultInfo].default_outputs[0],
     #     ctx.attrs.entry,
     # ], hidden = [node_env_file, pnp_json])
+
+def _js_module_impl(ctx: AnalysisContext) -> list[Provider]:
+    """
+    The .pnp.data.json file is part of the yarn pnp specification
+    We use that spec to interop with the js ecosystem.
+    """
+
+    workspace = ctx.actions.declare_output("__runspace", dir = True)
+    (js_deps, pnp_json) = create_pnp_json(ctx, workspace)
 
     bundle = ctx.actions.declare_output("{}-bundle.js".format(ctx.label.name))
 
@@ -212,8 +212,7 @@ def _js_module_impl(ctx: AnalysisContext) -> list[Provider]:
                     [
                         ctx.attrs._toolchain[JsToolchainInfo].esbuild,
                         "--bundle",
-                        # TODO make external
-                        "--sourcemap=internal",
+                        "--sourcemap=external",
                         "--loader:.js=jsx",
                         "--format=cjs",
                         "--log-level=verbose",
@@ -223,10 +222,6 @@ def _js_module_impl(ctx: AnalysisContext) -> list[Provider]:
                     delimiter = " ",
                 ),
             ]),
-
-            #     cmd_args(output, format = "mkdir -p {}"),
-            # cmd_args(output, format = "cd {}"),
-            # cmd_args(flags, archive, delimiter = " ", relative_to = output),
         ],
         is_executable = True,
         allow_args = True,

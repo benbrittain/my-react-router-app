@@ -1,18 +1,7 @@
 import React from "react";
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from "react-router";
-
-function App() {
-  return (
-    <div>Hello, from buck2 w/ react! </div>
-  );
-}
-
-function App2() {
-  return (
-    <div>Goodbyee! </div>
-  );
-}
+import { App,App2 } from "./app"
 
 const container = document.getElementById('root');
 const root = createRoot(container);
