@@ -8,7 +8,7 @@ rust_binary(
         "//build/utils/buck-resources:buck-resources",
     ],
     resources = {
-        "bundle.js": "//frontend:app",
+        "bundle.js": "//frontend:app[bundle]",
         "index.html": ":index.html",
     },
 )

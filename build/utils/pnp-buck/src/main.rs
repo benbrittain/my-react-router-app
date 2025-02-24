@@ -12,7 +12,6 @@ use std::{
 use anyhow::Error;
 use clap::{Parser as ClapParser, Subcommand};
 use nom::{
-    AsChar, Err, IResult, Parser,
     branch::alt,
     bytes::complete::{escaped, tag, take_while},
     character::complete::{
@@ -20,12 +19,13 @@ use nom::{
         one_of,
     },
     combinator::{cut, map, opt, value},
-    error::{ContextError, ErrorKind, ParseError, context},
+    error::{context, ContextError, ErrorKind, ParseError},
     multi::{separated_list0, separated_list1},
     number::complete::double,
     sequence::{delimited, preceded, separated_pair, terminated},
+    AsChar, Err, IResult, Parser,
 };
-use nom_language::error::{VerboseError, convert_error};
+use nom_language::error::{convert_error, VerboseError};
 use regex::Regex;
 use serde::Deserialize;
 use serde_json::Value;
@@ -237,12 +237,13 @@ fn main() -> Result<(), Error> {
         reader.read_line(buf);
     }
     reader.read_to_string(&mut buf);
-    writeln!(f, r#"load("//build/rules/yarn/defs.bzl", "yarn_dep")"#);
+    writeln!(f, r#"load("//build/rules/js/defs.bzl", "yarn_dep")"#);
     match root::<(&str, ErrorKind)>(&buf) {
         Err(e) => {
             panic!("error: {e}");
         }
-        Ok((_, packages)) => {
+        Ok((r, packages)) => {
+            assert_eq!(r, "", "yarn.lock was not fully parsed.");
             let mut lookup: HashMap<(String, String), String> = HashMap::new();
             // lookup table
             for package in &packages {
@@ -272,15 +273,17 @@ fn main() -> Result<(), Error> {
                     // skip the patch targets for now
                     continue;
                 }
-                if package.name.contains("@types") {
-                    // skip the type targets for now
-                    continue;
-                }
+                // if package.name.contains("@types") {
+                // skip the type targets for now
+                // continue;
+                // }
                 let pkg_name = package.name.split("@npm:").next().unwrap();
                 let pkg_reference = package.version;
                 let pkg_chksum = package.checksum.unwrap();
+                let pkg_name_part = pkg_name.to_string();
+                let pkg_name_part = pkg_name_part.trim_start_matches("@types/").to_string();
                 let url = format!(
-                    "https://registry.npmjs.org/{pkg_name}/-/{pkg_name}-{pkg_reference}.tgz"
+                    "https://registry.npmjs.org/{pkg_name}/-/{pkg_name_part}-{pkg_reference}.tgz"
                 );
                 let body = reqwest::blocking::get(&url)?.bytes()?;
                 let sha = sha256::digest_bytes(&body);
@@ -294,10 +297,6 @@ fn main() -> Result<(), Error> {
     deps = ["#
                 );
                 for dep in &package.dependencies {
-                    if dep.name.contains("@types") {
-                        // skip the type targets for now
-                        continue;
-                    }
                     write!(
                         f,
                         r#"

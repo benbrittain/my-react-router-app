@@ -4,8 +4,7 @@ load("@prelude//toolchains:genrule.bzl", "system_genrule_toolchain")
 load("@prelude//toolchains:python.bzl", "system_python_bootstrap_toolchain", "system_python_toolchain")
 load("@prelude//toolchains:remote_test_execution.bzl", "remote_test_execution_toolchain")
 load("@prelude//toolchains:rust.bzl", "system_rust_toolchain")
-load("@root//build/rules/typescript:defs.bzl", "typescript_toolchain")
-load("@root//build/rules/yarn:defs.bzl", "js_toolchain")
+load("@root//build/rules/js:defs.bzl", "js_toolchain")
 
 system_cxx_toolchain(
     name = "cxx",
@@ -46,12 +45,10 @@ noop_test_toolchain(
     visibility = ["PUBLIC"],
 )
 
-typescript_toolchain(
-    name = "typescript",
-    visibility = ["PUBLIC"],
-)
-
 js_toolchain(
     name = "js",
+    esbuild = "esbuild",
+    tsc = "/home/ben/workspace/my-react-router-app/third-party/node/.yarn/unplugged/typescript-patch-6da68bae26/node_modules/typescript/bin/tsc",
+    node = "node",
     visibility = ["PUBLIC"],
 )

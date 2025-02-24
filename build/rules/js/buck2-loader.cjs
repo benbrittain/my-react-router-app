@@ -8,14 +8,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
   const fs = require('fs');
   const path = require('path');
   const process = require('process');
-  const { spawnSync } = require('child_process');
-  try {
-    const child = spawnSync('buckle', ['root']);
-    basePath = child.stdout.toString().trim();
-    process.chdir(basePath);
-  } catch (err) {
-    throw new Error(`Could not switch to expected buck2 root: ${err}`);
-  }
+  basePath = "."
   const pnpDataFilepath = path.resolve(process.env.PNP_BUCK_JSON);
   return hydrateRuntimeState(JSON.parse(fs.readFileSync(pnpDataFilepath, 'utf8')), { basePath });
 }

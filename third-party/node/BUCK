@@ -1,9 +1,50 @@
-load("//build/rules/yarn/defs.bzl", "yarn_dep")
+load("//build/rules/js/defs.bzl", "yarn_dep")
+yarn_dep(
+    name = "@types/cookie-0.6.0",
+    pkg_name = "@types/cookie",
+    pkg_reference = "0.6.0",
+    checksum = "f7489dd8a7b9a9169b033ae4b2e16e59fbdf59d3469df0a11850ffe15c187e94",
+    deps = [
+    ],
+    visibility = ["PUBLIC"],
+)
+            
+yarn_dep(
+    name = "@types/react-dom-19.0.4",
+    pkg_name = "@types/react-dom",
+    pkg_reference = "19.0.4",
+    checksum = "ac99ea7c9ead38bd86119e3780bde26fc0bcc0a344a81664294df39b790e343c",
+    deps = [
+    ],
+    visibility = ["PUBLIC"],
+)
+            
+yarn_dep(
+    name = "@types/react-19.0.10",
+    pkg_name = "@types/react",
+    pkg_reference = "19.0.10",
+    checksum = "70a7b53fd7a5ba19db9e168e2153aaa1117a894c09090257dd95832f8e946a79",
+    deps = [
+        ":csstype-3.1.3",
+    ],
+    visibility = ["PUBLIC"],
+)
+            
 yarn_dep(
     name = "cookie-1.0.2",
     pkg_name = "cookie",
     pkg_reference = "1.0.2",
     checksum = "c31087f5377b0da2d93183d10675ea2d03b286832ef12c08f978a50701e87f69",
+    deps = [
+    ],
+    visibility = ["PUBLIC"],
+)
+            
+yarn_dep(
+    name = "csstype-3.1.3",
+    pkg_name = "csstype",
+    pkg_reference = "3.1.3",
+    checksum = "2f083f7cf2a398f05a624b4efa2b14496c45e77cd2b12a0647e2697567186777",
     deps = [
     ],
     visibility = ["PUBLIC"],
@@ -26,6 +67,7 @@ yarn_dep(
     pkg_reference = "7.2.0",
     checksum = "5ab97ec356fd559c47cf686ee7ba72817dea47d6ad5baad7f1b32ef79d710c6f",
     deps = [
+        ":@types/cookie-0.6.0",
         ":cookie-1.0.2",
         ":set-cookie-parser-2.7.1",
         ":turbo-stream-2.4.0",
@@ -68,16 +110,6 @@ yarn_dep(
     pkg_name = "turbo-stream",
     pkg_reference = "2.4.0",
     checksum = "a9f7da5d0b5bc862f62cc07ed1f7d818d998a335e59975d7998ac902bb949c0e",
-    deps = [
-    ],
-    visibility = ["PUBLIC"],
-)
-            
-yarn_dep(
-    name = "typescript-5.7.3",
-    pkg_name = "typescript",
-    pkg_reference = "5.7.3",
-    checksum = "80cfca1254bab8e81d639178e42d6406d856fba6e34cad60d1ab50ee6e5f7ebb",
     deps = [
     ],
     visibility = ["PUBLIC"],

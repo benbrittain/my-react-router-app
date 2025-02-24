@@ -1,12 +1,14 @@
-load("//build/rules/yarn/defs.bzl", "js_module")
+load("//build/rules/js/defs.bzl", "js_module")
 
 js_module(
     name = "app",
-    srcs = glob(["**/*.js"]),
-    entry = "index.js",
+    srcs = glob(["**/*.tsx"]),
+    entry = "index.tsx",
     deps = [
         "//third-party/node:react-dom-19.0.0",
         "//third-party/node:react-19.0.0",
+        "//third-party/node:@types/react-19.0.10",
+        "//third-party/node:@types/react-dom-19.0.4",
         "//third-party/node:react-router-7.2.0",
     ],
     visibility = ["PUBLIC"],

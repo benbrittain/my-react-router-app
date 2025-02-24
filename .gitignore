@@ -1,15 +1,8 @@
-.DS_Store
-/node_modules/
-
-# React Router
-/.react-router/
-
 # Buck2
 /buck-out/
 rust-project.json
 
-# yarn install
+# Yarn
 .yarn/
 .pnp.data.json
 .pnp.cjs
-.yarnrc.yml
